@@ -17,7 +17,9 @@ exports.up = function(knex) {
     })
     .createTable('potluck_attendance', table => {
       table.increments('id');
-      table.boolean('confirmed');
+      table.boolean('confirmed')
+        .notNullable()
+        .defaultTo(0);
       table.integer('pl_id')
         .unsigned()
         .notNullable()
