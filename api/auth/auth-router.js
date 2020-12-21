@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 
 const jwtSecret = require("../../config/secret");
 const User = require("./auth-model");
+const { validateCreds, unAvailability } = require("../middleware/auth-middleware");
 
 const createToken = (user) => {
   const payload = {
@@ -17,7 +18,7 @@ const createToken = (user) => {
 };
 
 //END POINTS
-router.post("/register", async (req, res) => {
+router.post("/register", validateCreds, unAvailability, async (req, res) => {
   const newUser = req.body;
   const rounds = process.env.BCRYPT_ROUNDS || 2;
 
@@ -27,6 +28,25 @@ router.post("/register", async (req, res) => {
   try {
     const addedUser = await User.addUser(newUser);
     res.status(200).json(addedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.post("/login", validateCreds, async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findBy({ username: username });
+    if (user && bcryptjs.compareSync(password, user.password)) {
+      const token = createToken(user);
+      res.status(200).json({
+        message: `Welcome, ${user.username}`,
+        token: token,
+      });
+    } else {
+      res.status(401).json("Invalid Credentials");
+    }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
