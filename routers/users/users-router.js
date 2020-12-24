@@ -50,6 +50,8 @@ router.delete('/:id', validId, (req, res) => {
         })
 })
 
+module.exports = router
+
 function validId (req, res, next) {
     const {id}  = req.params
 
@@ -65,5 +67,3 @@ function validId (req, res, next) {
             res.status(500).json(err)
         })
 }
-
-module.exports = router
