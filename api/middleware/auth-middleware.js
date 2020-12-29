@@ -1,4 +1,4 @@
-const User = require("../auth/auth-model");
+const User = require("../routers/auth/auth-model");
 
 const validateCreds = (req, res, next) => {
   const creds = req.body;
