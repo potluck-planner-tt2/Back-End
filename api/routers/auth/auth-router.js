@@ -2,9 +2,9 @@ const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
 
-const jwtSecret = require("../../config/secret");
+const jwtSecret = require("../../../config/secret");
 const User = require("./auth-model");
-const { validateCreds, unAvailability } = require("../middleware/auth-middleware");
+const { validateCreds, unAvailability } = require("../../middleware/auth-middleware");
 
 const createToken = (user) => {
   const payload = {
