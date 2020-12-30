@@ -1,6 +1,10 @@
 const router = require('express').Router();
 
 const Users = require('./users-model');
+const {
+  validateUserId,
+  validateUserName,
+} = require('../../middleware/middlewares');
 
 router.get('/', (req, res) => {
   Users.findAll()
@@ -12,7 +16,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', validId, (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   const { id } = req.params;
 
   Users.findById(id)
@@ -24,20 +28,20 @@ router.get('/:id', validId, (req, res) => {
     });
 });
 
-router.put('/:id', validId, (req, res) => {
+router.put('/:id', validateUserId, validateUserName, (req, res) => {
   const { id } = req.params;
-  const user = req.body;
+  const change = req.body;
 
-  Users.editUser(user, id)
+  Users.editUser(change, id)
     .then((user) => {
       res.status(200).json({ message: 'User updated successfully' });
     })
     .catch((err) => {
-      res.status(500).json(err);
+      res.status(500).json({ message: err.message });
     });
 });
 
-router.delete('/:id', validId, (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   const { id } = req.params;
 
   Users.deleteUser(id)
@@ -50,19 +54,3 @@ router.delete('/:id', validId, (req, res) => {
 });
 
 module.exports = router;
-
-function validId(req, res, next) {
-  const { id } = req.params;
-
-  Users.findById(id)
-    .then((user) => {
-      if (user) {
-        next();
-      } else {
-        res.status(400).json({ message: 'ID is invalid.' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-}

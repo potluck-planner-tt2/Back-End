@@ -1,6 +1,10 @@
 const router = require('express').Router();
 
 const Potluck = require('./potlucks-model');
+const {
+  validatePLCreds,
+  validatePLID,
+} = require('../../middleware/middlewares');
 
 router.get('/', (req, res) => {
   Potluck.findPotluck()
@@ -14,7 +18,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', validId, (req, res) => {
+router.get('/:id', validatePLID, (req, res) => {
   const { id } = req.params;
 
   Potluck.findPotluckById(id)
@@ -26,26 +30,19 @@ router.get('/:id', validId, (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', validatePLCreds, async (req, res) => {
   const potluck = req.body;
-  const { pl_id, name, organizer_id } = req.body;
-
-  if (pl_id && name && organizer_id) {
-    Potluck.addPotluck(potluck)
-      .then((potluck) => {
-        res.status(201).json({ message: 'Potluck added successfully.' });
-      })
-      .catch((err) => {
-        res.status(500).json({ message: 'Something went wrong.' });
-      });
-  } else {
-    res
-      .status(400)
-      .json({ message: 'Please make sure all required fields are valid.' });
+  try {
+    const addedPotluckID = await Potluck.addPotluck(potluck);
+    //Grab new potluck data to return to user
+    const addedPotluck = await Potluck.findPotluckById(addedPotluckID[0]);
+    res.status(200).json(addedPotluck);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-router.put('/:id', validId, (req, res) => {
+router.put('/:id', validatePLID, (req, res) => {
   const potluck = req.body;
   const { id } = req.params;
 
@@ -60,7 +57,7 @@ router.put('/:id', validId, (req, res) => {
     });
 });
 
-router.delete(':id', validId, (req, res) => {
+router.delete('/:id', validatePLID, (req, res) => {
   const { id } = req.params;
 
   Potluck.deletePotluck(id)
@@ -76,18 +73,18 @@ router.delete(':id', validId, (req, res) => {
 
 module.exports = router;
 
-function validId(req, res, next) {
-  const { id } = req.params;
+// function validId(req, res, next) {
+//   const { id } = req.params;
 
-  Potluck.findPotluckById(id)
-    .then((potluck) => {
-      if (potluck) {
-        next();
-      } else {
-        res.status(404).json({ message: 'Potluck not found.' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-}
+//   Potluck.findPotluckById(id)
+//     .then((potluck) => {
+//       if (potluck) {
+//         next();
+//       } else {
+//         res.status(404).json({ message: 'Potluck not found.' });
+//       }
+//     })
+//     .catch((err) => {
+//       res.status(500).json(err);
+//     });
+// }

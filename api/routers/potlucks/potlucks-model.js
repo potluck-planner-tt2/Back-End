@@ -13,7 +13,7 @@ function findPotluck() {
 }
 
 function findPotluckById(id) {
-  return db('potlucks').where({ id }).first();
+  return db('potlucks').where({ pl_id: id }).first();
 }
 
 function addPotluck(potluck) {
@@ -21,9 +21,9 @@ function addPotluck(potluck) {
 }
 
 function editPotluck(potluck, id) {
-  return db('potlucks').where('id', id).update(potluck);
+  return db('potlucks').where({ pl_id: id }).update(potluck);
 }
 
 function deletePotluck(id) {
-  return db('potlucks').where('id', id).del();
+  return db('potlucks').where({ pl_id: id }).del();
 }
