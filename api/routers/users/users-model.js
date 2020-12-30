@@ -9,21 +9,21 @@ module.exports = {
 };
 
 function findAll() {
-  return db('users');
+  return db('users').select('user_id', 'username');
 }
 
 function findBy(filter) {
-  return db('users').select('id', 'username', 'password').where(filter);
+  return db('users').select('user_id', 'username').where(filter);
 }
 
 function findById(id) {
-  return db('users').where({ id }).first();
+  return db('users').where({ user_id: id }).first();
 }
 
 function deleteUser(id) {
-  return db('users').where({ id }).delete();
+  return db('users').where({ user_id: id  }).delete();
 }
 
-function editUser(user, id) {
-  return db('users').where('id', id).update(user);
+function editUser(change, id) {
+  return db('users').where({ user_id: id }).update(change);
 }
