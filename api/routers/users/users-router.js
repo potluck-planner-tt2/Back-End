@@ -1,7 +1,10 @@
 const router = require('express').Router();
 
 const Users = require('./users-model');
-const { validateUserId } = require('../../middleware/users-middlewares');
+const {
+  validateUserId,
+  validateUserName,
+} = require('../../middleware/users-middlewares');
 
 router.get('/', (req, res) => {
   Users.findAll()
@@ -25,7 +28,7 @@ router.get('/:id', validateUserId, (req, res) => {
     });
 });
 
-router.put('/:id', validateUserId, (req, res) => {
+router.put('/:id', validateUserId, validateUserName, (req, res) => {
   const { id } = req.params;
   const change = req.body;
 
@@ -51,4 +54,3 @@ router.delete('/:id', validateUserId, (req, res) => {
 });
 
 module.exports = router;
-

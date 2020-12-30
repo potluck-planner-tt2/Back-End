@@ -11,6 +11,16 @@ const validateUserId = async (req, res, next) => {
   }
 };
 
+const validateUserName = (req, res, next) => {
+  const { username } = req.body; 
+  if (!username) {
+    res.status(400).json({message: 'Include a valid username'}); 
+  } else { 
+    next ();
+  }
+};
+
 module.exports = {
-  validateUserId
+  validateUserId, 
+  validateUserName
 };
