@@ -1,10 +1,13 @@
-const router = require("express").Router();
-const jwt = require("jsonwebtoken");
-const bcryptjs = require("bcryptjs");
+const router = require('express').Router();
+const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
 
-const jwtSecret = require("../../../config/secret");
-const User = require("./auth-model");
-const { validateCreds, unAvailability } = require("../../middleware/auth-middleware");
+const jwtSecret = require('../../../config/secret');
+const User = require('./auth-model');
+const {
+  validateCreds,
+  unAvailability,
+} = require('../../middleware/auth-middleware');
 
 const createToken = (user) => {
   const payload = {
@@ -12,13 +15,13 @@ const createToken = (user) => {
     username: user.username,
   };
   const options = {
-    expiresIn: "1h",
+    expiresIn: '1h',
   };
   return jwt.sign(payload, jwtSecret, options);
 };
 
 //END POINTS
-router.post("/register", validateCreds, unAvailability, async (req, res) => {
+router.post('/register', validateCreds, unAvailability, async (req, res) => {
   const newUser = req.body;
   const rounds = process.env.BCRYPT_ROUNDS || 2;
 
@@ -33,7 +36,7 @@ router.post("/register", validateCreds, unAvailability, async (req, res) => {
   }
 });
 
-router.post("/login", validateCreds, async (req, res) => {
+router.post('/login', validateCreds, async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -45,7 +48,7 @@ router.post("/login", validateCreds, async (req, res) => {
         token: token,
       });
     } else {
-      res.status(401).json("Invalid Credentials");
+      res.status(401).json('Invalid Credentials');
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
