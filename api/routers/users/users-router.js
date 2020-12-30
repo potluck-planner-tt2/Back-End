@@ -4,7 +4,7 @@ const Users = require('./users-model');
 const {
   validateUserId,
   validateUserName,
-} = require('../../middleware/users-middlewares');
+} = require('../../middleware/middlewares');
 
 router.get('/', (req, res) => {
   Users.findAll()
