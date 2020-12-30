@@ -26,20 +26,23 @@ const validateUserName = (req, res, next) => {
 //POTLUCKS MIDDLEWARE
 const validatePLID = async (req, res, next) => {
   const { id } = req.params;
-  const potluck = await Potluck.findPotluckById(id); 
-  
+  const potluck = await Potluck.findPotluckById(id);
+
   if (!potluck) {
-    res.status(404).json({ message: "Invalid Potluck Id"});
+    res.status(404).json({ message: 'Invalid Potluck Id' });
   } else {
-    next ();
+    next();
   }
 };
 
-const validatePLCreds = (req, res, next) => {
-  const {name, organizer_id} = req.body; 
+const validatePLCreds = async (req, res, next) => {
+  const { name, organizer_id } = req.body;
+  const checkOrganizer = await User.findById(organizer_id);
 
   if (!name || !organizer_id) {
     res.status(400).json({ message: 'Please include a valid username and id' });
+  } else if (!checkOrganizer) {
+    res.status(400).json({ message: 'Invalid Organizer ID' });
   } else {
     next();
   }
@@ -49,5 +52,5 @@ module.exports = {
   validateUserId,
   validateUserName,
   validatePLCreds,
-  validatePLID
+  validatePLID,
 };
