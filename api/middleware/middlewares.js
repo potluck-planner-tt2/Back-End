@@ -42,9 +42,9 @@ const validatePLCreds = async (req, res, next) => {
   if (!name || !organizer_id) {
     res.status(400).json({ message: 'Please include a valid username and id' });
   } else if (!checkOrganizer) {
-    res.status(400).json({ message: 'Invalid Organizer ID'}); 
+    res.status(400).json({ message: 'Invalid Organizer ID' });
   } else {
-    next ()
+    next();
   }
 };
 

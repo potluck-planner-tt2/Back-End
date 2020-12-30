@@ -16,6 +16,7 @@ exports.up = function (knex) {
         .inTable('users')
         .onDelete('RESTRICT')
         .onUpdate('RESTRICT');
+      table.datetime('date_time').notNullable();
     })
     .createTable('potluck_attendance', (table) => {
       table.increments('id');
