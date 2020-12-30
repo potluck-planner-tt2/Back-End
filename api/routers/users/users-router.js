@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const Users = require('./users-model');
+const { validateUserId } = require('../../middleware/users-middlewares');
 
 router.get('/', (req, res) => {
   Users.findAll()
@@ -12,7 +13,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', validId, (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   const { id } = req.params;
 
   Users.findById(id)
@@ -24,7 +25,7 @@ router.get('/:id', validId, (req, res) => {
     });
 });
 
-router.put('/:id', validId, (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   const { id } = req.params;
   const change = req.body;
 
@@ -37,7 +38,7 @@ router.put('/:id', validId, (req, res) => {
     });
 });
 
-router.delete('/:id', validId, (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   const { id } = req.params;
 
   Users.deleteUser(id)
@@ -51,18 +52,3 @@ router.delete('/:id', validId, (req, res) => {
 
 module.exports = router;
 
-async function validId(req, res, next) {
-  const { id } = req.params;
-
-  await Users.findById(id)
-    .then((user) => {
-      if (user) {
-        next();
-      } else {
-        res.status(400).json({ message: 'ID is invalid.' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-}

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const User = require('../routers/auth/auth-model');
+const Auth = require('../routers/auth/auth-model');
 const jwtSecret = require('../../config/secret');
 
 const validateCreds = (req, res, next) => {
@@ -14,7 +14,7 @@ const validateCreds = (req, res, next) => {
 
 const unAvailability = async (req, res, next) => {
   const { username } = req.body;
-  const user = await User.findBy({ username: username });
+  const user = await Auth.findBy({ username: username });
   if (user) {
     res.status(400).json('Username taken - please select another');
   } else {

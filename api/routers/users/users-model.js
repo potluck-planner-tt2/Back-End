@@ -17,11 +17,14 @@ function findBy(filter) {
 }
 
 function findById(id) {
-  return db('users').where({ user_id: id }).first();
+  return db('users')
+    .where({ user_id: id })
+    .first()
+    .select('user_id', 'username');
 }
 
 function deleteUser(id) {
-  return db('users').where({ user_id: id  }).delete();
+  return db('users').where({ user_id: id }).delete();
 }
 
 function editUser(change, id) {
