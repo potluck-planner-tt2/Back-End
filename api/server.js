@@ -9,6 +9,7 @@ const authRouter = require('./routers/auth/auth-router');
 const usersRouter = require('./routers/users/users-router'); 
 const potluckRouter = require('./routers/potlucks/potlucks-router');
 const foodRouter = require('./routers/foods/foods-router');
+const { restrictPath } = require('./middleware/auth-middleware');
 
 const server = express();
 
@@ -19,9 +20,9 @@ server.use(morgan("tiny"));
 server.use(express.json());
 
 server.use('/api/auth', authRouter); 
-server.use('/api/users', usersRouter);
-server.use('/api/potlucks', potluckRouter);
-server.use('/api/foods', foodRouter);
+server.use('/api/users', restrictPath, usersRouter);
+server.use('/api/potlucks', restrictPath, potluckRouter);
+server.use('/api/foods', restrictPath, foodRouter);
 
 
 server.get("/", (req, res) => {
