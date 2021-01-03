@@ -20,8 +20,14 @@ const editUserAttendance = (id, change) => {
   return db('potluck_attendance').where({ id: id }).update(change);
 };
 
+const inviteUser = (userId, plId) => {
+  const formattedInvite = { pl_id: plId, user_id: userId };
+  return db('potluck_attendance').insert(formattedInvite);
+};
+
 module.exports = {
   getAttendance,
   getUserAttendance,
-  editUserAttendance
+  editUserAttendance,
+  inviteUser
 };
