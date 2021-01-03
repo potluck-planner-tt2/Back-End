@@ -74,4 +74,26 @@ router.post('/:id/foodlist', async (req, res) => {
   }
 });
 
+router.put('/:id/foodlist', async (req, res) => {
+  const change = req.body; 
+
+  try { 
+    const edit = await Potluck.editFoodItem(change); 
+    res.status(200).json(edit);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+})
+
+router.delete('/foodlist/:id', async (req, res) => {
+  const { id } = req.params; 
+
+  try {
+    const deleted = await Potluck.deleteFoodItem(id); 
+    res.status(200).json(deleted);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;

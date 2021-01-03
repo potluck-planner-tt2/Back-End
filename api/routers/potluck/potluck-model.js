@@ -42,9 +42,16 @@ const addFoodItem = (plId, foodId, ownerId) => {
     food_id: foodId,
     owner_id: ownerId,
   };
-
   return db('event_foods').insert(newFoodItem);
 };
+
+const editFoodItem = (change) => {
+  return db('event_foods').where('id', change.id).update(change);
+}
+
+const deleteFoodItem = (id) => {
+  return db('event_foods').where('id', id).del();
+}
 
 module.exports = {
   getAttendance,
@@ -53,4 +60,6 @@ module.exports = {
   inviteUser,
   getPLFoods,
   addFoodItem,
+  editFoodItem,
+  deleteFoodItem
 };
