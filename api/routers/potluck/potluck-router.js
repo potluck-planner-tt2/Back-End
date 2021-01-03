@@ -51,12 +51,24 @@ router.post('/invite', async (req, res) => {
 
 //POTLUCK FOODS MANAGEMENT
 
-router.get('/:id/food', async (req, res) => {
+router.get('/:id/foodlist', async (req, res) => {
   const { id } = req.params;
 
   try {
     const foods = await Potluck.getPLFoods(id);
     res.status(200).json(foods);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.post('/:id/foodlist', async (req, res) => {
+  const { id } = req.params;
+  const { food_id, owner_id } = req.body;
+
+  try { 
+    const newFoodItem = await Potluck.addFoodItem(id, food_id, owner_id);
+    res.status(200).json(newFoodItem);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

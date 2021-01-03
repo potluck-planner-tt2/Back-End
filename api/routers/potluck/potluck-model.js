@@ -1,5 +1,6 @@
 const db = require('../../../data/dbConfig');
 
+//ATTENDANCE QUERIES
 const getAttendance = (id) => {
   return db('potluck_attendance as pa')
     .select('pa.id', 'p.name', 'u.username', 'pa.confirmed')
@@ -25,13 +26,24 @@ const inviteUser = (userId, plId) => {
   return db('potluck_attendance').insert(formattedInvite);
 };
 
-const getPLFoods = (potluckID) => {
+//FOODS QUERIES
+const getPLFoods = (plId) => {
   return db('event_foods as ef')
-    .select('ef.id', 'p.name', 'fi.name', 'u.username')
+    .select('ef.id', 'p.name', 'fi.name', 'u.username as owner')
     .join('potlucks as p', { 'ef.pl_id': 'p.pl_id' })
     .join('users as u', { 'ef.owner_id': 'u.user_id' })
     .join('food_items as fi', { 'ef.food_id': 'fi.food_id' })
-    .where('ef.pl_id', potluckID);
+    .where('ef.pl_id', plId);
+};
+
+const addFoodItem = (plId, foodId, ownerId) => {
+  const newFoodItem = {
+    pl_id: plId,
+    food_id: foodId,
+    owner_id: ownerId,
+  };
+
+  return db('event_foods').insert(newFoodItem);
 };
 
 module.exports = {
@@ -39,5 +51,6 @@ module.exports = {
   getUserAttendance,
   editUserAttendance,
   inviteUser,
-  getPLFoods
+  getPLFoods,
+  addFoodItem,
 };
