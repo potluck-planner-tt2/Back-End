@@ -25,9 +25,19 @@ const inviteUser = (userId, plId) => {
   return db('potluck_attendance').insert(formattedInvite);
 };
 
+const getPLFoods = (potluckID) => {
+  return db('event_foods as ef')
+    .select('ef.id', 'p.name', 'fi.name', 'u.username')
+    .join('potlucks as p', { 'ef.pl_id': 'p.pl_id' })
+    .join('users as u', { 'ef.owner_id': 'u.user_id' })
+    .join('food_items as fi', { 'ef.food_id': 'fi.food_id' })
+    .where('ef.pl_id', potluckID);
+};
+
 module.exports = {
   getAttendance,
   getUserAttendance,
   editUserAttendance,
-  inviteUser
+  inviteUser,
+  getPLFoods
 };

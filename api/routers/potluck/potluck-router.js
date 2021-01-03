@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Potluck = require('./potluck-model');
 
+//ATTENDANCE MANAGEMENT ENPOINTS
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -43,6 +44,19 @@ router.post('/invite', async (req, res) => {
   try {
     const invite = await Potluck.inviteUser(user_id, pl_id);
     res.status(200).json(invite);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//POTLUCK FOODS MANAGEMENT
+
+router.get('/:id/food', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const foods = await Potluck.getPLFoods(id);
+    res.status(200).json(foods);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
