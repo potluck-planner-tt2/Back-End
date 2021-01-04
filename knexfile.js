@@ -27,6 +27,7 @@ module.exports = {
   //FOR HEROKU
   production: {
     client: 'pg',
+    useNullAdDefault: true,
     connection: pgConnection,
     ssl: {
       rejectUnauthorized: false,
