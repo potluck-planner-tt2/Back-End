@@ -1,4 +1,4 @@
-const pgConnection = process.env.DATABASE_URL;
+const pgConnection = `${process.env.DATABASE_URL}?sslmode=require`;
 
 const sharedConfig = {
   client: 'sqlite3',
@@ -28,7 +28,7 @@ module.exports = {
   production: {
     client: 'pg',
     useNullAdDefault: true,
-    connection: pgConnection,
+    connection: pgConnection ,
     ssl: {
       rejectUnauthorized: false,
     },
