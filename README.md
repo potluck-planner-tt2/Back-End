@@ -4,6 +4,8 @@ The sauce
 https://pl-planner.herokuapp.com
 
 |       |       |       |
+|**POST**   |*/api/auth/register*    |Register new user, username and password required   |
+|**POST**   |*/api/auth/login*    |login, username and password required - returns token   |
 |---    |---    |---    |
 |**GET**    |*/api/users*    |List of all users  |
 |**GET**    |*/api/users/:id*   |Shows user with given id   |
