@@ -24,10 +24,12 @@ server.use('/api/auth', authRouter);
 server.use('/api/users', restrictPath, usersRouter);
 server.use('/api/potlucks', restrictPath, potlucksRouter);
 server.use('/api/foods', restrictPath, foodRouter);
-server.use('/api/potluck',restrictPath, potluckRouter);
+server.use('/api/potluck', restrictPath, potluckRouter);
 
 server.get('/', (req, res) => {
-  res.status(200).json({ message: 'API up and running' });
+  res
+    .status(200)
+    .json({ message: 'API up and running', env: `${process.env.DB_ENV}` });
 });
 
 module.exports = server;
