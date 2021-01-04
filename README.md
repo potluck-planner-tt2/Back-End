@@ -1,7 +1,7 @@
 # Back-End
 The sauce
 
-Endpoints:
+https://pl-planner.herokuapp.com
 
 |       |       |       |
 |---    |---    |---    |
