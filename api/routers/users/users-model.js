@@ -13,7 +13,10 @@ function findAll() {
 }
 
 function findBy(filter) {
-  return db('users').select('user_id', 'username').where(filter);
+  return db('users')
+    .select('user_id', 'username')
+    .where({ username: filter })
+    .first();
 }
 
 function findById(id) {

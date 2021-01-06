@@ -16,7 +16,7 @@ const unAvailability = async (req, res, next) => {
   const { username } = req.body;
   const user = await Auth.findBy({ username: username });
   if (user) {
-    res.status(400).json('Username taken - please select another');
+    res.status(400).json({ message: 'Username taken - please select another' });
   } else {
     next();
   }
