@@ -13,6 +13,7 @@ exports.seed = function (knex) {
         { username: 'sanders', password: hashedPassword },
         { username: 'ronald', password: hashedPassword },
         { username: 'mcdonald', password: hashedPassword },
+        { username: 'joe', password: hashedPassword },
       ]);
     });
 };
