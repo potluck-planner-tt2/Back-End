@@ -8,6 +8,7 @@ exports.up = function (knex) {
     .createTable('potlucks', (table) => {
       table.increments('pl_id');
       table.string('name').notNullable().unique();
+      table.string('location').notNullable();
       table
         .integer('organizer_id')
         .unsigned()
