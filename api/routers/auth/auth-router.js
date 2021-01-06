@@ -4,6 +4,7 @@ const bcryptjs = require('bcryptjs');
 
 const jwtSecret = require('../../../config/secret');
 const User = require('./auth-model');
+const Users = require('../users/users-model');
 const {
   validateCreds,
   unAvailability,
@@ -30,7 +31,8 @@ router.post('/register', validateCreds, unAvailability, async (req, res) => {
 
   try {
     const addedUser = await User.addUser(newUser);
-    res.status(200).json(addedUser);
+    const userInfo = await Users.findBy(newUser.username);
+    res.status(200).json(userInfo);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -46,6 +48,8 @@ router.post('/login', validateCreds, async (req, res) => {
       res.status(200).json({
         message: `Welcome, ${user.username}`,
         token: token,
+        username: user.username,
+        user_id: user.user_id,
       });
     } else {
       res.status(401).json('Invalid Credentials');
