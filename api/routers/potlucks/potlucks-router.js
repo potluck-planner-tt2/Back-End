@@ -35,8 +35,8 @@ router.post('/', validatePLCreds, async (req, res) => {
   try {
     const addedPotluckID = await Potluck.addPotluck(potluck);
     //Grab new potluck data to return to user
-    const addedPotluck = await Potluck.findPotluckById(addedPotluckID[0]);
-    res.status(200).json(addedPotluck);
+    // const addedPotluck = await Potluck.findPotluckById(addedPotluckID[0]);
+    res.status(200).json(addedPotluckID);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
